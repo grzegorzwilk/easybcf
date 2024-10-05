@@ -7,16 +7,15 @@ import os
 import uuid
 
 import bcf.v3.bcfxml as BCF # type: ignore
-import bcf.v3.model as MDL
-import bcf.v3.visinfo as VIS
+import bcf.v3.model as MDL # type: ignore
+import bcf.v3.visinfo as VIS # type: ignore
 
 def prepare_snapshot(snapshot_filename: str) -> str:
-    """Reads a PNG file and returns its Base64 encoded string."""
+    """Reads a PNG file and returns its byte content."""
     full_snapshot_path = os.path.join(os.path.dirname(__file__), snapshot_filename)
     
     with open(full_snapshot_path, "rb") as image_file:
-        # Encode the image file to Base64 and return the string
-        return base64.b64encode(image_file.read()).decode('utf-8')
+        return image_file.read()
 
 bcf = BCF.BcfXml()
 new_bcf = bcf.create_new("LKJDLFJ")
@@ -37,8 +36,10 @@ visualization_info = MDL.VisualizationInfo(
     components=MDL.Components(),  # Initialize components as needed
 )
 
-new_viewpoint = VIS.VisualizationInfoHandler(visualization_info)
-new_viewpoint = new_topic.add_visinfo_handler(new_viewpoint, snapshot_filename=snapshot)
+
+new_viewpoint = VIS.VisualizationInfoHandler(visualization_info, snapshot=snapshot)
+print(new_viewpoint)
+new_topic.add_visinfo_handler(new_viewpoint, snapshot_filename="snapshot.png")
 
 new_bcf.save("test.bcf") # TODO activate
 print(new_bcf )
