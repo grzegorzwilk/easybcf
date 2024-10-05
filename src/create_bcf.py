@@ -1,15 +1,19 @@
-from ifcopenshell.bcf import BCF
+# TODO UTF-8
 
-# Create a BCF object
-bcf = BCF()
+# first run "source venv/bin/activate"
 
-# Create a topic
-topic = bcf.create_topic('Sample Issue', 'Description of the issue here.')
+import bcf.v3.bcfxml as BCF
 
-# Optional: Add a viewpoint (with dummy values)
-viewpoint = topic.add_viewpoint('viewpoint_1', 'Sample Viewpoint', [0, 0, 0])
-viewpoint.set_camera_position(1, 1, 1)  # Set camera position (example)
+bcf = BCF.BcfXml()
+new_bcf = bcf.create_new("LKJDLFJ")
 
-# Save to BCF file
-with open('output.bcf', 'wb') as bcf_file:
-    bcf_file.write(bcf.to_bytes())
+new_topic = new_bcf.add_topic(
+        title="New Topic Title",
+        description="This is a description of the new topic.",
+        author="John Doe", # This might be redundant
+        topic_type="Issue", # This might be redundant
+        topic_status="Open" # This might be redundant
+    )
+
+new_bcf.save("test.bcf")
+print(new_bcf )
