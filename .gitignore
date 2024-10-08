@@ -1,2 +1,7 @@
 dist/
 venv/
+.obsidian/
+local/
+easybcf_env/
+easyBCF.sublime-project
+.DS_Store
